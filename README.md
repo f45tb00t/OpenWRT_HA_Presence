@@ -18,7 +18,7 @@
 ## Install (on the AP)
 1) Copy bundle to the AP and extract at /
    ```
-   scp -O presence_detection.tar.gz root@192.168.0.1:/
+   scp -O OpenWRT_HA_Presence-main.zip root@192.168.0.1:/
    ```
 2) Edit:
    - /etc/presence/presence.conf
