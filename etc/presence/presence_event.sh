@@ -52,10 +52,11 @@ TOPIC="$(awk -v m="$MAC" '
   }
 ' "$DEV_CONF")"
 
-[ -n "${TOPIC_PREFIX:-}" ] && TOPIC="${TOPIC_PREFIX%/}/$TOPIC"
-
 log "mapped mac=$MAC -> topic='$TOPIC'"
 [ -n "$TOPIC" ] || exit 0
+
+# Enrich TOPIC with prefix
+[ -n "${TOPIC_PREFIX:-}" ] && TOPIC="${TOPIC_PREFIX%/}/$TOPIC"
 
 publish() {
   payload="$1"
