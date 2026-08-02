@@ -29,15 +29,78 @@
    sh /etc/presence/install.sh
    ```
 
+## Persist across OpenWrt sysupgrade
+
+Add the Presence files to `/etc/sysupgrade.conf` so they are preserved during an OpenWrt upgrade:
+
+```
+/etc/presence/
+/etc/init.d/presence_hostapd
+```
+
+You can add them with:
+
+```
+cat >> /etc/sysupgrade.conf <<'EOF'
+/etc/presence/
+/etc/init.d/presence_hostapd
+EOF
+```
+
+Verify that the entries are present:
+
+```
+cat /etc/sysupgrade.conf
+```
+
+Verify that the Presence files are included in the sysupgrade backup:
+
+```
+sysupgrade -l | grep -E 'presence|presence_hostapd'
+```
+
+The required packages must also be present in the new firmware image:
+
+```
+hostapd-utils
+mosquitto-client-ssl
+iw
+```
+
+When using Attended Sysupgrade, make sure these packages are included in the new image and keep the configuration during the upgrade.
+
+After the upgrade, verify the installation:
+
+```
+sh /etc/presence/healthcheck.sh
+```
+
+Check the service:
+
+```
+/etc/init.d/presence_hostapd status
+```
+
+If necessary, enable and restart it:
+
+```
+/etc/init.d/presence_hostapd enable
+/etc/init.d/presence_hostapd restart
+```
+
 ## Debug
-- Enable logging: set `DEBUG=1` in `/etc/presence/presence.conf` and restart service:
-  ```
-  /etc/init.d/presence_hostapd restart
-  ```
-- Watch logs:
-  ```
-  logread -f | grep presence_event
-  ```
+
+Enable logging: set `DEBUG=1` in `/etc/presence/presence.conf` and restart service:
+
+```
+/etc/init.d/presence_hostapd restart
+```
+
+Watch logs:
+
+```
+logread -f | grep presence_event
+```
 
 ## Home Assistant
 Use MQTT `device_tracker` entities subscribed to the topics you configured in `presence_devices.conf`.
