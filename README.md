@@ -653,35 +653,6 @@ If necessary:
 
 ---
 
-# Design
 
-The project intentionally keeps presence detection simple:
 
-```text
-hostapd events
-      |
-      v
-small shell script
-      |
-      v
-MQTT
-      |
-      v
-Home Assistant
-```
-
-It does not require periodic SSH polling, router API polling, ARP polling, continuous Wi-Fi scans or a database.
-
-Temporary runtime state is stored in:
-
-```text
-/tmp/presence_state
-```
-
-and therefore remains in RAM instead of creating unnecessary flash writes.
-
-OpenWrt determines whether a device is present on its configured local radios.
-
-Home Assistant can combine the resulting presence states when multiple physical access points are used.
-
-KISS.
+KISS. => Keep it stupid and simple
